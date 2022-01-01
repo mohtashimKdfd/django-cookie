@@ -7,5 +7,7 @@ urlpatterns = [
     path('getcook',views.getcookie,name='getcookie'),
     path('delete',views.deletecookie,name='delete cookie'),
     path('signup',views.signup,name='signup'),
-    path('addnew',views.addnew,name='addnew')
+    path('addnew',views.addnew,name='addnew'),
+    path('login',views.login,name='login'),
+    path('authenticate',views.authenticate,name='authenticate')
 ]

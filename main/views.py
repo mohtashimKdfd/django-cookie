@@ -1,8 +1,8 @@
-from enum import Flag
-from django.db.models import base
+
 from django.shortcuts import render
 from .models import Userss
 # Create your views here.
+flag=0
 
 
 def setCookie(request):
@@ -25,17 +25,20 @@ def getcookie(request):
 
 
 def deletecookie(request):
-    response = render(request,'main/deletecookie.html')
+    response = render(request,'main/logout.html')
     response.delete_cookie('name')
 
     return response
 
 def signup(request):
-    flag=1
-    context = {'status':flag}
+    name = request.COOKIES.get('name','GUEST')
+    if name and name != 'GUEST':
+        return render(request,'main/signup.html',{'status':'User already signed in'})
+    context = {'status':'Not signed'}
     return render(request,'main/signup.html',context)
 
 def addnew(request):
+
     if request.method == "POST":
         username = request.POST.get('username')
         password = request.POST.get('password')
@@ -47,3 +50,24 @@ def addnew(request):
         stats='Not Signed up || Logged in'
         context={'status':stats}
     return render(request,'main/signup.html',context)
+
+def login(request):
+    return render(request,'main/login.html')
+
+def authenticate(request):
+    if request.method=='POST':
+        username = request.POST.get('username')
+        if Userss.objects.filter(username=username).exists():
+            targetuser = Userss.objects.get(username=username)
+            print(targetuser,targetuser.password)
+            if request.POST.get('password')==targetuser.password:
+                response = render(request,'main/login.html',{'status':'Logged in'})
+                response.set_cookie('name',username)
+                global flag
+                flag=1
+                return response
+            else:
+                return render(request,'main/login.html',{'status':"Error Password"})
+        else:
+            return render(request,'main/login.html',{'status':'no user exist||Signup'})
+    return render(request,'main/login.html',{'status',''})

@@ -4,19 +4,17 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Signup</title>
+    <title>Document</title>
 </head>
 <body>
-    {{ status }}
-
-    <form action="{% url 'addnew' %}" method="POST">
-
+    <form action="{% url 'authenticate' %}" method="POST">
         {% csrf_token %}
         <input type="text" name="username" placeholder="Enter username" required>
         <input type="password" name="password" placeholder="Enter password" required>
         <input type="submit" value="SignUp">
 
     </form>
-    
+    {{ status }}
+
 </body>
 </html>
